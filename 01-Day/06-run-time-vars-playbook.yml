@@ -1,0 +1,21 @@
+---
+- hosts: webservers
+  become: true
+  tasks:
+    - name: install httpd package
+      yum:
+        name: "{{package_name}}"
+        state: latest
+    - name: copy index.html file
+      copy:
+        src: index.html
+        dest: /var/www/html/index.html
+    - name: start httpd server
+      service:
+        name: "{{package_name}}"
+        state: started
+...
+
+
+Command to Run the playbook:
+ansible-playbook 06-run-time-vars-playbook.yml --extra-vars package_name=httpd
