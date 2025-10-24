@@ -1,0 +1,35 @@
+---
+- hosts: webservers
+  become: true
+  tasks:
+    - name: install httpd package
+      yum:
+        name: httpd
+        state: latest
+      tags: [install]
+    - name: copy index.html file
+      copy:
+        src: index.html
+        dest: /var/www/html/index.html
+      tags: [copy]
+      notify: 
+        start httpd server
+  handlers:
+    - name: start httpd server
+      service:
+        name: httpd
+        state: started
+...
+
+
+
+
+Commands :
+
+$ ansible-playbook 05-handlers-and-tags.yml --list-tags   ==> display all tags available in playbook
+
+$ ansible-playbook 05-handlers-and-tags.yml --tags "install" ==> Execute a task whose tag name is install
+
+$ ansible-playbook 05-handlers-and-tags.yml --tags "install, copy" ==> Execute a task whose tag name is install and copy
+
+$ ansible-playbook 05-handlers-and-tags.yml --skip-tags "install" ==> Execute all tasks by skipping install task
