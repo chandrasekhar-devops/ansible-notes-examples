@@ -1,0 +1,8 @@
+---
+- hosts: all
+  tasks:
+  - name: create a file in all managed nodes
+    file:
+     path: /home/ansible/alien.txt
+     state: touch
+...
